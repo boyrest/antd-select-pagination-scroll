@@ -25,7 +25,7 @@ export interface AntdSelectPaginationScrollIProps {
    */
   fetchData: (params: FetchParams) => Promise<FetchData>;
   /**
-   * 初始化获取下拉框值
+   * 初始化根据value获取label的值，之后根据label获取options
    */
   initSearchValue?: (value: string | number) => Promise<string>;
   /**

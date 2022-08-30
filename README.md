@@ -1,33 +1,65 @@
-# antd-select-pagination-scroll-v3
-
-## Getting Started
-
-Install dependencies,
+安装
 
 ```bash
-$ npm i
+npm install AntdSelectPaginationScroll
 ```
 
-Start the dev server,
+使用
 
-```bash
-$ npm start
+```js
+import React, { useEffect } from 'react';
+import { AntdSelectPaginationScroll } from 'antd-select-pagination-scroll';
+
+export default () => {
+  const [value, setValue] = useState();
+  return (
+    <AntdSelectPaginationScroll
+      value={value}
+      onChange={(newValue) => {
+        setValue(newValue);
+      }}
+      fetchData={async ({ pageSize, current, searchValue }) => {}}
+    />
+  );
+};
 ```
 
-Build documentation,
+添加的属性
 
-```bash
-$ npm run docs:build
-```
+```typescript
+import { SelectProps } from 'antd';
 
-Run test,
+export interface FetchParams {
+  pageSize: number;
+  current: number;
+  searchValue: string;
+}
 
-```bash
-$ npm test
-```
+export interface FetchData {
+  list: DefaultOptionType[];
+  total: number;
+}
 
-Build library via `father-build`,
+export interface AntdSelectPaginationScrollIProps {
+  /**
+   *  每页的数量
+   */
+  scrollPageSize?: number;
+  /**
+   *
+   * @param params
+   * 获取下拉数据
+   */
+  fetchData: (params: FetchParams) => Promise<FetchData>;
+  /**
+   * 初始化根据value获取label的值，之后根据label获取options
+   */
+  initSearchValue?: (value: string | number) => Promise<string>;
+  /**
+   * 1 类型为 {label,value} 2 类型为 number string
+   */
+  valueType?: 1 | 2;
+}
 
-```bash
-$ npm run build
+AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & SelectProps>;
 ```
