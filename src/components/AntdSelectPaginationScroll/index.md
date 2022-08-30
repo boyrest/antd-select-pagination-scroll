@@ -1,0 +1,38 @@
+---
+group:
+  title: 数据录入
+  order: 1
+title: AntdSelectPaginationScroll 下拉框分页
+---
+
+<h2>AntdSelectPaginationScroll 下拉框分页</h2>
+
+<p>
+ 基于antd4的select的下拉分页
+</p>
+
+<h3>代码演示</h3>
+
+<h3>带有初始值的查询</h3>
+
+```tsx
+import React, { useEffect, useRef, useState } from 'react';
+import { AntdSelectPaginationScroll } from 'antd-select-pagination-scroll';
+import { Form, Button, Input, Row, Popconfirm, message } from 'antd';
+import queryString from 'query-string';
+
+export default () => {
+  const [value, setValue] = useState();
+  return (
+    <AntdSelectPaginationScroll
+      value={value}
+      onChange={(newValue) => {
+        setValue(newValue);
+      }}
+      fetchData={async ({ pageSize, current, searchValue }) => {}}
+    />
+  );
+};
+```
+
+<API></API>
