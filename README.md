@@ -11,7 +11,7 @@ import React, { useEffect } from 'react';
 import { AntdSelectPaginationScroll } from 'antd-select-pagination-scroll';
 
 export default () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(1);
   return (
     <AntdSelectPaginationScroll
       value={value}
@@ -19,6 +19,9 @@ export default () => {
         setValue(newValue);
       }}
       fetchData={async ({ pageSize, current, searchValue }) => {}}
+      initSearchValue={async (value) => {
+        return 'label1';
+      }}
     />
   );
 };
@@ -52,13 +55,18 @@ export interface AntdSelectPaginationScrollIProps {
    */
   fetchData: (params: FetchParams) => Promise<FetchData>;
   /**
-   * 初始化根据value获取label的值，之后根据label获取options
+   * 初始化根据value获取label的值，之后根据label获取options，valueType为2的情况，该属性必须设置，用来获取label
    */
   initSearchValue?: (value: string | number) => Promise<string>;
   /**
-   * 1 类型为 {label,value} 2 类型为 number string
+   * value的类型：1 类型为 {label,value} 2 类型为 number string
+   * 默认为2
    */
   valueType?: 1 | 2;
+  /**
+   *  触发search的debounce时间
+   */
+  searchDebounceTime?: number;
 }
 
 AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & SelectProps>;

@@ -22,7 +22,7 @@ import { Form, Button, Input, Row, Popconfirm, message } from 'antd';
 import queryString from 'query-string';
 
 export default () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(1);
   return (
     <AntdSelectPaginationScroll
       value={value}
@@ -30,6 +30,9 @@ export default () => {
         setValue(newValue);
       }}
       fetchData={async ({ pageSize, current, searchValue }) => {}}
+      initSearchValue={async (value) => {
+        return 'label1';
+      }}
     />
   );
 };

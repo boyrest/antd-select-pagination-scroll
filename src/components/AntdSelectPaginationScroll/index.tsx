@@ -25,13 +25,18 @@ export interface AntdSelectPaginationScrollIProps {
    */
   fetchData: (params: FetchParams) => Promise<FetchData>;
   /**
-   * 初始化根据value获取label的值，之后根据label获取options
+   * 初始化根据value获取label的值，之后根据label获取options，valueType为2的情况，该属性必须设置，用来获取label
    */
   initSearchValue?: (value: string | number) => Promise<string>;
   /**
-   * 1 类型为 {label,value} 2 类型为 number string
+   * value的类型：1 类型为 {label,value} 2 类型为 number string
+   * 默认为2
    */
   valueType?: 1 | 2;
+  /**
+   *  触发search的debounce时间
+   */
+  searchDebounceTime?: number;
 }
 
 const DEFAULT_PAGESIZE = 20;
@@ -39,7 +44,15 @@ const DEFAULT_PAGESIZE = 20;
 const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & SelectProps> = (
   props,
 ) => {
-  const { value, onChange, initSearchValue, scrollPageSize, fetchData, ...rest } = props;
+  const {
+    value,
+    onChange,
+    initSearchValue,
+    scrollPageSize,
+    searchDebounceTime = 400,
+    fetchData,
+    ...rest
+  } = props;
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<DefaultOptionType[]>([]);
   const [current, setCurrent] = useState(1);
@@ -48,6 +61,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
   const [searchValue, setSearchValue] = useState('');
   const timeRef = useRef<number | null>(null);
   const fetchRef = useRef<number | null>(null);
+  const focusRef = useRef<boolean>(false);
   const valueType = props.valueType || 2;
 
   const getInitSearchValue = useCallback(
@@ -60,10 +74,14 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     [initSearchValue],
   );
 
-  const getOptions = useCallback(async () => {
+  const getOptions = async () => {
     setLoading(true);
     try {
-      const { list, total } = await fetchData({ pageSize, current, searchValue });
+      const { list, total } = await fetchData({
+        pageSize,
+        current,
+        searchValue,
+      });
       if (current === 1) {
         setOptions(list);
       } else {
@@ -73,7 +91,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     } finally {
       setLoading(false);
     }
-  }, [fetchData]);
+  };
 
   useEffect(() => {
     if (fetchRef.current) {
@@ -98,16 +116,17 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     setCurrent(1);
   }, [scrollPageSize]);
 
-  const scrollEnd = useCallback((e) => {
+  const scrollEnd = (e: any) => {
     const { target } = e;
     if (target.scrollTop + target.offsetHeight === target.scrollHeight && !loading) {
       if (current * pageSize < total) {
         setCurrent(current + 1);
       }
     }
-  }, []);
+  };
 
   const searchHandle = useCallback((newSearchvalue) => {
+    focusRef.current = false;
     if (timeRef.current) {
       clearTimeout(timeRef.current);
       timeRef.current = null;
@@ -115,8 +134,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     timeRef.current = setTimeout(() => {
       setSearchValue(newSearchvalue);
       setCurrent(1);
-      setTotal(0);
-    }, 400);
+    }, searchDebounceTime);
   }, []);
 
   const parseValue = useCallback((data) => {
@@ -133,9 +151,28 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
       onPopupScroll={scrollEnd}
       onSearch={searchHandle}
       options={options}
+      defaultActiveFirstOption={false}
+      filterOption={false}
+      allowClear
+      onClear={() => {
+        setSearchValue('');
+        setCurrent(1);
+      }}
+      onFocus={() => {
+        focusRef.current = true;
+      }}
+      onInputKeyDown={(e) => {
+        if (e.keyCode === 8 && focusRef.current) {
+          setSearchValue('');
+          setCurrent(1);
+        }
+      }}
       notFoundContent={loading ? <Spin size="small" /> : null}
       value={parseValue(value)}
       onChange={(newValue) => {
+        if (newValue !== null && newValue !== undefined) {
+          focusRef.current = true;
+        }
         if (valueType === 1) {
           // @ts-ignore
           onChange(options.find((item) => item.value === newValue) || null);
