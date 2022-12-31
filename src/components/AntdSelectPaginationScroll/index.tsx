@@ -13,6 +13,11 @@ export interface FetchData {
   total: number;
 }
 
+export enum ValueType {
+  ObjectValue = 1,
+  SimpleValue = 2,
+}
+
 export interface AntdSelectPaginationScrollIProps {
   /**
    *  每页的数量
@@ -21,18 +26,19 @@ export interface AntdSelectPaginationScrollIProps {
   /**
    *
    * @param params
-   * 获取下拉数据
+   * 获取下拉分页数据
    */
   fetchData: (params: FetchParams) => Promise<FetchData>;
   /**
-   * 初始化根据value获取label的值，之后根据label获取options，valueType为2的情况，该属性必须设置，用来获取label
+   * valueType为2的情况，该属性必须设置
+   * 用来获取label，初始化根据value获取label的值，之后根据label获取options
    */
-  initSearchValue?: (value: string | number) => Promise<string>;
+  fetchLabelByInit?: (value: string | number) => Promise<string>;
   /**
    * value的类型：1 类型为 {label,value} 2 类型为 number string
    * 默认为2
    */
-  valueType?: 1 | 2;
+  valueType?: ValueType.ObjectValue | ValueType.SimpleValue;
   /**
    *  触发search的debounce时间
    */
@@ -47,7 +53,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
   const {
     value,
     onChange,
-    initSearchValue,
+    fetchLabelByInit,
     scrollPageSize,
     searchDebounceTime = 400,
     fetchData,
@@ -64,14 +70,14 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
   const focusRef = useRef<boolean>(false);
   const valueType = props.valueType || 2;
 
-  const getInitSearchValue = useCallback(
+  const getLabelByInit = useCallback(
     async (value: string | number) => {
-      if (initSearchValue) {
-        const label = await initSearchValue(value);
+      if (fetchLabelByInit) {
+        const label = await fetchLabelByInit(value);
         setSearchValue(label);
       }
     },
-    [initSearchValue],
+    [fetchLabelByInit],
   );
 
   const getOptions = async () => {
@@ -107,7 +113,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     if (valueType === 1) {
       setSearchValue(value?.label || '');
     } else {
-      value !== null && value !== undefined && getInitSearchValue(value);
+      value !== null && value !== undefined && getLabelByInit(value);
     }
   }, []);
 

@@ -29,9 +29,23 @@ export default () => {
       onChange={(newValue) => {
         setValue(newValue);
       }}
-      fetchData={async ({ pageSize, current, searchValue }) => {}}
-      initSearchValue={async (value) => {
-        return 'label1';
+      fetchData={async ({ pageSize, current, searchValue }) => {
+        return {
+          list: [
+            {
+              label: 'test1',
+              value: 1,
+            },
+            {
+              label: 'test2',
+              value: 2,
+            },
+          ],
+          total: 10,
+        };
+      }}
+      fetchLabelByInit={async (value) => {
+        return 'test1';
       }}
     />
   );
