@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "antd-select-pagination-scroll",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "react components base on antd",
   "author": "baron zhu",
   "license": "MIT",
@@ -9,7 +9,6 @@
   "keywords": [
     "React",
     "Component",
-    "CURD",
     "antd4",
     "select",
     "pagination",

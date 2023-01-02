@@ -99,7 +99,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     }
   };
 
-  useEffect(() => {
+  function debounceGetOptions() {
     if (fetchRef.current) {
       clearTimeout(fetchRef.current);
       fetchRef.current = null;
@@ -107,6 +107,10 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     fetchRef.current = setTimeout(() => {
       getOptions();
     }, 100);
+  }
+
+  useEffect(() => {
+    debounceGetOptions();
   }, [searchValue, current, pageSize]);
 
   useEffect(() => {
@@ -166,6 +170,18 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
       }}
       onFocus={() => {
         focusRef.current = true;
+        if (current === 1) {
+          debounceGetOptions();
+        } else {
+          setCurrent(1);
+        }
+      }}
+      onMouseEnter={() => {
+        if (current === 1) {
+          debounceGetOptions();
+        } else {
+          setCurrent(1);
+        }
       }}
       onInputKeyDown={(e) => {
         if (e.keyCode === 8 && focusRef.current) {
