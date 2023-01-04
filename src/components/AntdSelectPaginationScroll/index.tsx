@@ -43,6 +43,10 @@ export interface AntdSelectPaginationScrollIProps {
    *  触发search的debounce时间
    */
   searchDebounceTime?: number;
+  /**
+   * 鼠标进去select的时候下拉框自动刷新,默认true
+   */
+  mouseEnterRefresh?: boolean;
 }
 
 const DEFAULT_PAGESIZE = 20;
@@ -57,6 +61,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     scrollPageSize,
     searchDebounceTime = 400,
     fetchData,
+    mouseEnterRefresh = true,
     ...rest
   } = props;
   const [loading, setLoading] = useState(false);
@@ -170,17 +175,14 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
       }}
       onFocus={() => {
         focusRef.current = true;
-        if (current === 1) {
-          debounceGetOptions();
-        } else {
-          setCurrent(1);
-        }
       }}
       onMouseEnter={() => {
-        if (current === 1) {
-          debounceGetOptions();
-        } else {
-          setCurrent(1);
+        if (mouseEnterRefresh) {
+          if (current === 1) {
+            debounceGetOptions();
+          } else {
+            setCurrent(1);
+          }
         }
       }}
       onInputKeyDown={(e) => {
