@@ -16,6 +16,7 @@ export interface FetchData {
 export enum ValueType {
   ObjectValue = 1,
   SimpleValue = 2,
+  ObjectArrayValue = 3,
 }
 
 export interface AntdSelectPaginationScrollIProps {
@@ -35,10 +36,10 @@ export interface AntdSelectPaginationScrollIProps {
    */
   fetchLabelByInit?: (value: string | number) => Promise<string>;
   /**
-   * value的类型：1 类型为 {label,value} 2 类型为 number string
+   * value的类型：1 类型为 {label,value} 2 类型为 number string 3 类型为多选，考虑这个是search select 类型只支持[{label,value}]]
    * 默认为2
    */
-  valueType?: ValueType.ObjectValue | ValueType.SimpleValue;
+  valueType?: ValueType.ObjectValue | ValueType.SimpleValue | ValueType.ObjectArrayValue;
   /**
    *  触发search的debounce时间
    */
@@ -64,6 +65,8 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
     mouseEnterRefresh = true,
     ...rest
   } = props;
+  const { mode } = rest;
+  const isMultiple = mode === 'multiple';
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<DefaultOptionType[]>([]);
   const [current, setCurrent] = useState(1);
@@ -73,7 +76,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
   const timeRef = useRef<number | null>(null);
   const fetchRef = useRef<number | null>(null);
   const focusRef = useRef<boolean>(false);
-  const valueType = props.valueType || 2;
+  const valueType = isMultiple ? ValueType.ObjectArrayValue : props.valueType || 2;
 
   const getLabelByInit = useCallback(
     async (value: string | number) => {
@@ -119,10 +122,14 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
   }, [searchValue, current, pageSize]);
 
   useEffect(() => {
-    if (valueType === 1) {
+    if (valueType === ValueType.ObjectValue) {
       setSearchValue(value?.label || '');
-    } else {
+    }
+    if (valueType === ValueType.SimpleValue) {
       value !== null && value !== undefined && getLabelByInit(value);
+    }
+    if (valueType === ValueType.ObjectArrayValue) {
+      setSearchValue('');
     }
   }, []);
 
@@ -153,7 +160,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
   }, []);
 
   const parseValue = useCallback((data) => {
-    if (valueType === 1) {
+    if (valueType === ValueType.ObjectValue) {
       return data?.value;
     } else {
       return data;
@@ -206,6 +213,7 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
         }
       }}
       {...rest}
+      labelInValue={isMultiple}
     />
   );
 };
