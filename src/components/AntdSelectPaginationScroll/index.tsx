@@ -1,5 +1,5 @@
 import React, { EventHandler, useCallback, useEffect, useRef, useState } from 'react';
-import { Select, SelectProps, Spin } from 'antd';
+import { Select, SelectProps, Spin, Empty } from 'antd';
 import { DefaultOptionType } from 'rc-select/lib/Select';
 
 export interface FetchParams {
@@ -198,7 +198,13 @@ const AntdSelectPaginationScroll: React.FC<AntdSelectPaginationScrollIProps & Se
           setCurrent(1);
         }
       }}
-      notFoundContent={loading ? <Spin size="small" /> : null}
+      notFoundContent={
+        loading ? (
+          <Spin size="small" />
+        ) : options?.length > 0 ? null : (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        )
+      }
       value={parseValue(value)}
       onChange={(newValue) => {
         if (newValue !== null && newValue !== undefined) {
