@@ -2,7 +2,7 @@ export default {
   esm: 'babel',
   lessInBabelMode: {
     globalVars: {
-      '@xm-prefix': 'antd-select-pagination-scroll',
+      '@xm-prefix': 'xman-packages',
     },
     javascriptEnabled: true,
   },

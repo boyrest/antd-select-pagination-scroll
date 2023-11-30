@@ -1,6 +1,6 @@
 ---
 hero:
-  title: antd-select-pagination-scroll
+  title: xman-packages
   desc: antd4 select 分页加载
   actions:
     - text: Getting Started
@@ -8,4 +8,4 @@ hero:
 footer: Open-source MIT Licensed | Copyright © 2020<br />Powered by [dumi](https://d.umijs.org)
 ---
 
-## Hello antd-select-pagination-scroll!
+## Hello xman-packages!

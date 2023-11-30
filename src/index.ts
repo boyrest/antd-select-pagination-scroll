@@ -1,1 +1,2 @@
-export { default as AntdSelectPaginationScroll } from './components/AntdSelectPaginationScroll';
+export { default as useDependencies } from './components/useDependencies';
+export { default as useEventCenter } from './components/useEventCenter';

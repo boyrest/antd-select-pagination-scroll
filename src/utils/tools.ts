@@ -1,4 +1,4 @@
-const PRIFIX_CLS = 'antd-select-pagination-scroll';
+const PRIFIX_CLS = 'xman-packages';
 
 export function getPrefixCls(suffix: string): string {
   return `${PRIFIX_CLS}-${suffix}`;
