@@ -64,6 +64,7 @@
     "yorkie": "^2.0.0"
   },
   "dependencies": {
-    "antd": "^4.22.6"
+    "antd": "^4.22.6",
+    "tinymce": "^6.1.2"
   }
 }

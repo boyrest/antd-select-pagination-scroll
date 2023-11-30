@@ -1,0 +1,49 @@
+.oneline-editor {
+  width: 536px;
+  height: 40px;
+  padding-left: 89px;
+  overflow: hidden;
+  line-height: 40px;
+  white-space: nowrap;
+  border-bottom: 1px solid #e6e6e6;
+  *:focus,
+  *:hover {
+    outline: 0px;
+  }
+  div {
+    overflow: hidden;
+  }
+}
+
+.@{xm-prefix}-emoji-textarea {
+  position: relative;
+  display: flex;
+  .tox-tinymce .tox-editor-container .tox-editor-header {
+    display: none;
+  }
+  .tox-toolbar {
+    .tox-tbtn svg {
+      fill: #6a6f7b;
+    }
+  }
+  .tox-tinymce {
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+  }
+  &-editor {
+    flex: 1;
+    position: relative;
+  }
+  &-limit {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: #c7c7cd;
+    font-size: 14px;
+    line-height: 14px;
+  }
+}
+
+.@{xm-prefix}-emoji-input{
+
+}
