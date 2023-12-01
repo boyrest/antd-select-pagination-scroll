@@ -1,8 +1,9 @@
 import React, { forwardRef, useEffect, useRef, useState, useImperativeHandle } from 'react';
+// @ts-ignore
 import { TinymceEditor } from '@dm/xman-packages';
 import { IAllProps } from '../TinymceEditor/components/Editor';
+// @ts-ignore
 import { Editor as TinyMCEEditor, EditorEvent } from 'tinymce';
-import styles from './index.module.less';
 import EmojiPopover from '../EmojiPopover';
 // @ts-ignore
 import { getEmojiName, handlePasteContent, countSymbols } from '../../utils/emoji';
@@ -31,10 +32,11 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
     preventInputByMaxLength = true,
     emoji = true,
     input,
+    id,
     ...rest
   } = props;
   const [length, setLength] = useState(0);
-  const editorRef = useRef<HTMLDivElement | null>(null);
+  const editorRef = useRef<any>(null);
 
   const handleBeforeAddUndo = (e: EditorEvent<'BeforeAddUndo'>, editor: TinyMCEEditor) => {
     if (maxLength && preventInputByMaxLength) {
@@ -108,7 +110,7 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
               plugins: '',
               menubar: false,
               forced_root_block: 'div',
-              paste_preprocess: (editor, data) => {
+              paste_preprocess: (editor:any, data:any) => {
                 data.content = handlePasteContent(editor, data, input);
               },
               content_style: `body {font-size: 14px;margin: 4px 10px;} img::selection {background-color: rgb(187,215,251) !important;} .braft-emoticon-wrap{width: 16px;

@@ -21,6 +21,7 @@ import {
   setMode,
 } from '../Utils';
 import { EditorPropTypes, IEditorPropTypes } from './EditorPropTypes';
+// @ts-ignore
 import { Bookmark, Editor as TinyMCEEditor, EditorEvent, TinyMCE } from 'tinymce';
 import { OSS_PREFIX } from '../../../utils/consts';
 
@@ -36,7 +37,9 @@ export interface IProps {
   init: EditorOptions & { selector?: undefined; target?: undefined };
   tagName: string;
   cloudChannel: string;
+  // @ts-ignore
   plugins: NonNullable<EditorOptions['plugins']>;
+  // @ts-ignore
   toolbar: NonNullable<EditorOptions['toolbar']>;
   disabled: boolean;
   textareaName: string;
@@ -72,6 +75,7 @@ export class Editor extends React.Component<IAllProps> {
     super(props);
     this.id = this.props.id || uuid('tiny-react');
     this.elementRef = React.createRef<HTMLElement>();
+    // @ts-ignore
     this.inline = this.props.inline ?? this.props.init?.inline ?? false;
     this.boundHandlers = {};
   }
@@ -361,8 +365,11 @@ export class Editor extends React.Component<IAllProps> {
       target,
       readonly: this.props.disabled,
       inline: this.inline,
+      // @ts-ignore
       plugins: mergePlugins(this.props.init?.plugins, this.props.plugins),
+      // @ts-ignore
       toolbar: this.props.toolbar ?? this.props.init?.toolbar,
+      // @ts-ignore
       setup: (editor) => {
         this.editor = editor;
         this.bindHandlers({});
@@ -374,16 +381,17 @@ export class Editor extends React.Component<IAllProps> {
         // problem... We avoid it by sneaking in a set content before the first
         // "official" setContent and using TinyMCE to do the sanitization.
         if (this.inline && !isTextareaOrInput(target)) {
-          editor.once('PostRender', (_evt) => {
+          editor.once('PostRender', (_evt:any) => {
             editor.setContent(this.getInitialValue(), { no_events: true });
           });
         }
-
+        // @ts-ignore
         if (this.props.init && isFunction(this.props.init.setup)) {
+          // @ts-ignore
           this.props.init.setup(editor);
         }
       },
-      init_instance_callback: (editor) => {
+      init_instance_callback: (editor:any) => {
         // check for changes that happened since tinymce.init() was called
         const initialValue = this.getInitialValue();
         this.currentContent = this.currentContent ?? editor.getContent();
@@ -397,8 +405,9 @@ export class Editor extends React.Component<IAllProps> {
         }
         const disabled = this.props.disabled ?? false;
         setMode(this.editor, disabled ? 'readonly' : 'design');
-        // ensure existing init_instance_callback is called
+        // @ts-ignore
         if (this.props.init && isFunction(this.props.init.init_instance_callback)) {
+          // @ts-ignore
           this.props.init.init_instance_callback(editor);
         }
       },
