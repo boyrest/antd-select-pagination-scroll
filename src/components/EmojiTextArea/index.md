@@ -28,6 +28,7 @@ export default () => {
         onChange={(val) => {
           setValue(val);
         }}
+        init={{placeholder: '111'}}
         maxLength={10}
       />
     </div>
@@ -102,6 +103,7 @@ export default () => {
         }}
         maxLength={20}
         input
+        init={{placeholder: '111'}}
         preventInputByMaxLength={false}
       />
     </div>

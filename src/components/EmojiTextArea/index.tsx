@@ -64,7 +64,6 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
       const length = textLen + emojiNum * 2;
       if (length <= maxLength || !preventInputByMaxLength) {
         onChange(value);
-        setLength(length);
       }
     } else {
       onChange(value);
@@ -74,6 +73,10 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
   const addEmoji = (emoji: string) => {
     editorRef.current?.editor?.insertContent(emoji);
   };
+
+  function getLength() {
+    return getTextLength(editorRef.current?.editor) + getEmojiNum(editorRef.current?.editor) * 2;
+  }
 
   useImperativeHandle(ref, () => ({
     getTextLength: () => {
@@ -85,11 +88,18 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
     getEmojiLength: () => {
       return getEmojiNum(editorRef.current?.editor) * 2;
     },
-    getLength: () => {
-      return getTextLength(editorRef.current?.editor) + getEmojiNum(editorRef.current?.editor) * 2;
-    },
+    getLength,
   }));
   const prefix = input ? PREFIX_CLASSNAME_COMPONENT_INPUT : PREFIX_CLASSNAME_COMPONENT;
+
+  useEffect(() => {
+    if (editorRef?.current?.editor) {
+      setLength(getLength());
+    } else {
+      setLength(0);
+    }
+  }, [value]);
+
   return (
     <div className={prefix}>
       <div className={`${prefix}-editor`}>
@@ -104,13 +114,16 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
                 e.preventDefault();
               }
             }}
+            onInit={() => {
+              setLength(getLength());
+            }}
             {...rest}
             init={{
               toolbar: false,
               plugins: '',
               menubar: false,
               forced_root_block: 'div',
-              paste_preprocess: (editor:any, data:any) => {
+              paste_preprocess: (editor: any, data: any) => {
                 data.content = handlePasteContent(editor, data, input);
               },
               content_style: `body {font-size: 14px;margin: 4px 10px;} img::selection {background-color: rgb(187,215,251) !important;} .braft-emoticon-wrap{width: 16px;
