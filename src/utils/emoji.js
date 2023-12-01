@@ -1,7 +1,8 @@
 import { OSS_PREFIX } from './consts';
+import filterHtml from './filterHtml';
 
 const PRE_PATH = `${OSS_PREFIX}/frontend/touch/emoji/`;
-// 表情图配置 https://bj.96weixin.com/emoji/
+
 export function getEmojiList() {
   return [
     `${PRE_PATH}face1f600.png`,
@@ -183,192 +184,6 @@ export function getEmojiList() {
     `${PRE_PATH}clipboard1f4cb.png`,
   ];
 }
-
-// 表情图配置
-// export function getEmojiII() {
-//   return {
-//     '😀': face1f600,
-//     '😁': eyes1f601,
-//     '😂': joy1f602,
-//     '🤣': laughing1f923,
-//     '😃': mouth1f603,
-//     '😄': eyes1f604,
-//     '😅': sweat1f605,
-//     '😆': eyes1f606,
-//     '😉': face1f609,
-//     '😊': eyes1f60a,
-//     '😋': food1f60b,
-//     '😎': sunglasses1f60e,
-//     '😍': eyes1f60d,
-//     '😘': kiss1f618,
-//     '😗': face1f617,
-//     '😙': eyes1f619,
-//     '🙂': face1f642,
-//     '🤗': face1f917,
-//     '🤔': face1f914,
-//     '😐': face1f610,
-//     '😑': face1f611,
-//     '😶': mouth1f636,
-//     '🙄': eyes1f644,
-//     '😏': face1f60f,
-//     '😣': face1f623,
-//     '😥': face1f625,
-//     '😮': mouth1f62e,
-//     '🤐': face1f910,
-//     '😯': face1f62f,
-//     '😪': face1f62a,
-//     '😫': face1f62b,
-//     '😴': face1f634,
-//     '😌': face1f60c,
-//     '😛': tongue1f61b,
-//     '😜': eye1f61c,
-//     '😝': eyes1f61d,
-//     '🤤': face1f924,
-//     '😒': face1f612,
-//     '😓': sweat1f613,
-//     '😔': face1f614,
-//     '😕': face1f615,
-//     '🙃': face1f643,
-//     '🤑': face1f911,
-//     '😲': face1f632,
-//     '☹': face2639,
-//     '😖': face1f616,
-//     '😞': face1f61e,
-//     '😟': face1f61f,
-//     '😤': triumph1f624,
-//     '😢': face1f622,
-//     '😭': face1f62d,
-//     '😦': mouth1f626,
-//     '😧': face1f627,
-//     '😨': face1f628,
-//     '😩': face1f629,
-//     '😬': face1f62c,
-//     '😰': sweat1f630,
-//     '😱': fear1f631,
-//     '😳': face1f633,
-//     '😵': face1f635,
-//     '😡': face1f621,
-//     '😠': face1f620,
-//     '😷': mask1f637,
-//     '🤒': thermometer1f912,
-//     '🤕': bandage1f915,
-//     '🤢': face1f922,
-//     '🤧': face1f927,
-//     '😇': halo1f607,
-//     '🤠': hat1f920,
-//     '🤡': face1f921,
-//     '🤥': face1f925,
-//     '🤓': face1f913,
-//     '😈': horns1f608,
-//     '👿': imp1f47f,
-//     '👹': ogre1f479,
-//     '👺': goblin1f47a,
-//     '💀': skull1f480,
-//     '👻': ghost1f47b,
-//     '👽': alien1f47d,
-//     '🤖': face1f916,
-//     '💩': poo1f4a9,
-//     '😺': mouth1f63a,
-//     '😸': eyes1f638,
-//     '😹': joy1f639,
-//     '😻': eyes1f63b,
-//     '😼': smile1f63c,
-//     '😽': eyes1f63d,
-//     '🙀': face1f640,
-//     '😿': face1f63f,
-//     '😾': face1f63e,
-//     '👫': hands1f46b,
-//     '👭': hands1f46d,
-//     '👂': ear1f442,
-//     '👃': nose1f443,
-//     '👣': footprints1f463,
-//     '👀': eyes1f440,
-//     '👁': eye1f441,
-//     '👅': tongue1f445,
-//     '👄': mouth1f444,
-//     '💋': mark1f48b,
-//     '👓': eyeglasses1f453,
-//     '🕶': sunglasses1f576,
-//     '👔': necktie1f454,
-//     '👕': shirt1f455,
-//     '👖': jeans1f456,
-//     '👗': dress1f457,
-//     '👘': kimono1f458,
-//     '👙': bikini1f459,
-//     '👚': clothes1f45a,
-//     '👛': purse1f45b,
-//     '👜': handbag1f45c,
-//     '👝': pouch1f45d,
-//     '🎒': satchel1f392,
-//     '👞': shoe1f45e,
-//     '👟': shoe1f45f,
-//     '👠': shoe1f460,
-//     '👡': sandal1f461,
-//     '👢': boots1f462,
-//     '👑': crown1f451,
-//     '👒': hat1f452,
-//     '🎩': hat1f3a9,
-//     '🎓': cap1f393,
-//     '⛑': cross26d1,
-//     '💄': lipstick1f484,
-//     '💍': ring1f48d,
-//     '🌂': umbrella1f302,
-//     '💼': briefcase1f4bc,
-//     '💪': biceps1f4aa,
-//     '✌': hand270c,
-//     '🤞': fingerscrossed1f91e,
-//     '🤘': horns1f918,
-//     '🖐': splayed1f590,
-//     '👍': sign1f44d,
-//     '🙏': hands1f64f,
-//     '🤝': handshake1f91d,
-//     '🏃': runner1f3c3,
-//     '👪': family1f46a,
-//     '🐭': mouseface1f42d,
-//     '🐮': cowface1f42e,
-//     '🐯': tigerface1f42f,
-//     '🐰': rabbitface1f430,
-//     '🐲': dragonface1f432,
-//     '🐍': snake1f40d,
-//     '🐴': horseface1f434,
-//     '🐏': ram1f40f,
-//     '🐵': monkeyface1f435,
-//     '🐔': chicken1f414,
-//     '🐶': dogface1f436,
-//     '🐷': pigface1f437,
-//     '🐼': pandaface1f43c,
-//     '🌹': rose1f339,
-//     '🌻': sunflower1f33b,
-//     '🍁': leaf1f341,
-//     '🌍': africa1f30d,
-//     '☀': rays2600,
-//     '🌙': moon1f319,
-//     '🌪': tornado1f32a,
-//     '❄': snowflake2744,
-//     '☃': snowman2603,
-//     '🔥': fire1f525,
-//     '✨': sparkles2728,
-//     '🎄': tree1f384,
-//     '💌': loveletter1f48c,
-//     '⌛': hourglass231b,
-//     '⏰': clock23f0,
-//     '🎁': present1f381,
-//     '💰': bag1f4b0,
-//     '💹': yensign1f4b9,
-//     '💘': arrow1f498,
-//     '❤': heart2764,
-//     '📢': speaker1f4e2,
-//     '🔔': bell1f514,
-//     '🎵': note1f3b5,
-//     '✅': mark2705,
-//     '❌': mark274c,
-//     '‼': mark203c,
-//     '💯': symbol1f4af,
-//     '㊗': congratulation3297,
-//     '🇨🇳': f1e81f1f3,
-//     '📋': clipboard1f4cb,
-//   };
-// }
 
 // 表情window系统list 和 表情图配置同步
 export function getEmojiwindowList() {
@@ -773,13 +588,7 @@ export function getEmojiName(str) {
   });
   return end1;
 }
-
-export function getNameToEmoji(str, gap = false) {
-  return getNameToEmojiToHtml(str, gap, true);
-}
-
-// 输入框内需要空格 gap 其他默认为false 因此表情组件在回显的时候必须传true
-export function getNameToEmojiToHtml(str, gap = false, appendP = false) {
+export function transformTextToRichText(str) {
   if (!str) return '';
   str = str.split('\n').map((item) => {
     return `<div>${item || ''}</div>`;
@@ -805,7 +614,7 @@ export function handlePasteContent(editor, args ,isInput) {
     // input的时候删除所有换行
     content = content.replace(/\n/g,'');
   }
-  content = getNameToEmoji(content).replace(/<div>/, '').replace(/<\/div>/, '');
+  content = transformTextToRichText(content).replace(/<div>/, '').replace(/<\/div>/, '');
   return content;
 }
 
@@ -828,7 +637,8 @@ export function getStrCount(substring, armstr) {
   return { length: endStr.length + count, emojiNum: count };
 }
 
-export function countSymbols(string) {
+export function countSymbols(richHtml) {
+  const str = filterHtml(getEmojiName(richHtml || ''));
   const ranges = [
     '\ud83c[\udf00-\udfff]',
     '\ud83d[\udc00-\udfff]',
@@ -836,7 +646,26 @@ export function countSymbols(string) {
     '\ud83e[\udd00-\udeff]',
     '[\u2600-\u27ff]',
   ];
-  const emojireg = string.replace(new RegExp(ranges.join('|'), 'g'), '$~');
+  const emojireg = str.replace(new RegExp(ranges.join('|'), 'g'), '$~');
 
   return getStrCount(emojireg, '$~');
+}
+
+export const  transformEmojiCodeToImg = (text)=>{
+  let rs = '';
+  for (const value of text) {
+    const index = getEmojiwindowList().indexOf(value);
+    if (index > -1) {
+      rs += `<img src='${
+        getEmojiList()[index]
+      }' class='braft-emoticon-wrap' />`;
+    } else {
+      rs += value;
+    }
+  }
+  return rs;
+}
+
+export const transformRichTextToText = (richText)=>{
+  return filterHtml(getEmojiName(richText || ''))
 }

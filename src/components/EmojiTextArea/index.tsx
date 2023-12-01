@@ -40,7 +40,7 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
     if (maxLength && preventInputByMaxLength) {
       const textLen = editor.getContent({ format: 'text' }).replace(/(^\s*)|(\s*$)/g, '').length;
       // 计算表情个数, 单个表情按照两个字符计算
-      const emojiNum = countSymbols(filterHtml(getEmojiName(editor.getContent() || ''))).emojiNum;
+      const emojiNum = countSymbols(editor.getContent() || '').emojiNum;
       const length = textLen + emojiNum * 2;
       if (length > maxLength) {
         e.preventDefault();
@@ -52,7 +52,7 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
     return editor.getContent({ format: 'text' }).replace(/(^\s*)|(\s*$)/g, '').length;
   };
   const getEmojiNum = (editor: TinyMCEEditor) => {
-    return countSymbols(filterHtml(getEmojiName(editor.getContent() || ''))).emojiNum;
+    return countSymbols(editor.getContent() || '').emojiNum;
   };
   const handleUpdate = (value: string, editor: TinyMCEEditor) => {
     if (maxLength) {
