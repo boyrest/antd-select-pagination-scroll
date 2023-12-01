@@ -29,7 +29,7 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
     onChange,
     maxLength,
     preventInputByMaxLength = true,
-    emoji = false,
+    emoji = true,
     input,
     ...rest
   } = props;
@@ -73,24 +73,6 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
     editorRef.current?.editor?.insertContent(emoji);
   };
 
-  useEffect(() => {
-    const keyHandler = (e) => {
-      if (e.code === 'Enter') {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-      }
-    };
-    if (input) {
-      editorRef.current?.editor?.on('keydown', keyHandler);
-    }
-    return () => {
-      if (input) {
-        editorRef.current?.editor?.off('keydown', keyHandler);
-      }
-    };
-  }, []);
-
   useImperativeHandle(ref, () => ({
     getTextLength: () => {
       return getTextLength(editorRef.current?.editor);
@@ -105,35 +87,42 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
       return getTextLength(editorRef.current?.editor) + getEmojiNum(editorRef.current?.editor) * 2;
     },
   }));
-
+  const prefix = input ? PREFIX_CLASSNAME_COMPONENT_INPUT : PREFIX_CLASSNAME_COMPONENT;
   return (
-    <div className={input ? PREFIX_CLASSNAME_COMPONENT_INPUT : PREFIX_CLASSNAME_COMPONENT}>
-      <div className={`${PREFIX_CLASSNAME_COMPONENT}-editor`}>
-        <TinymceEditor
-          ref={editorRef}
-          value={value || ''}
-          onEditorChange={handleUpdate}
-          onBeforeAddUndo={handleBeforeAddUndo}
-          {...rest}
-          init={{
-            toolbar: false,
-            plugins: '',
-            forced_root_block: 'div',
-            paste_preprocess: (editor, args) => {
-              args.content = handlePasteContent(editor, args);
-            },
-            content_style: `body {font-size: 14px;margin: 4px 10px;} img::selection {background-color: rgb(187,215,251);} .braft-emoticon-wrap{width: 16px;
-          height: 16px;
-          user-select: all;
-          position: relative;
-          top: 3px;}`,
-            statusbar: false,
-            ...(rest?.init || {}),
-          }}
-        />
-        {maxLength ? (
-          <div className={`${PREFIX_CLASSNAME_COMPONENT}-limit`}>{`${length}/${maxLength}`}</div>
-        ) : null}
+    <div className={prefix}>
+      <div className={`${prefix}-editor`}>
+        <div className={`${prefix}-richtext`}>
+          <TinymceEditor
+            ref={editorRef}
+            value={value || ''}
+            onEditorChange={handleUpdate}
+            onBeforeAddUndo={handleBeforeAddUndo}
+            onKeyDown={(e: EditorEvent<'onKeyDown'>, editor: TinyMCEEditor) => {
+              if (e.code === 'Enter' && input) {
+                e.preventDefault();
+              }
+            }}
+            {...rest}
+            init={{
+              toolbar: false,
+              plugins: '',
+              menubar: false,
+              forced_root_block: 'div',
+              paste_preprocess: (editor, data) => {
+                data.content = handlePasteContent(editor, data, input);
+              },
+              content_style: `body {font-size: 14px;margin: 4px 10px;} img::selection {background-color: rgb(187,215,251) !important;} .braft-emoticon-wrap{width: 16px;
+              height: 16px;
+              user-select: all;
+              position: relative;
+              top: 3px;}`,
+              statusbar: false,
+              inline: input,
+              ...(rest?.init || {}),
+            }}
+          />
+        </div>
+        {maxLength ? <div className={`${prefix}-limit`}>{`${length}/${maxLength}`}</div> : null}
       </div>
       {emoji ? <EmojiPopover onChange={(val) => addEmoji(val)} /> : null}
     </div>

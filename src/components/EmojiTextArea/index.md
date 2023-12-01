@@ -70,7 +70,7 @@ export default () => {
             }),
           ]}
         >
-          <EmojiTextArea maxLength={15} ref={editorRef} preventInputByMaxLength={false} emoji />
+          <EmojiTextArea maxLength={15} ref={editorRef} preventInputByMaxLength={false}/>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
@@ -83,7 +83,8 @@ export default () => {
 };
 ```
 
-<h4>带有emoji</h4>
+<h4>单行输入</h4>
+<div>模拟input单行输入</div>
 
 ```tsx
 import React, { useEffect, useRef, useState } from 'react';
@@ -99,8 +100,9 @@ export default () => {
         onChange={(val) => {
           setValue(val);
         }}
-        maxLength={200}
-        emoji
+        maxLength={20}
+        input
+        preventInputByMaxLength={false}
       />
     </div>
   );

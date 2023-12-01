@@ -770,20 +770,7 @@ export function getEmojiName(str) {
       return getEmojiwindowList()[imgIndex];
     }
     return mathed;
-  }); // 替换文本
-  // return end;
-  // let i;
-  // let len;
-  // let charCode;
-  // for (i = 0, len = end1.length; i < len; i++) {
-  //   charCode = end1[i].codePointAt(0).toString(16);
-  //   const codeStr = String(charCode);
-  //   if (!endTxt[charCode] && extList.indexOf(codeStr) < 0) {
-  //     endTxt[charCode] = charCode;
-  //     endList.push(charCode);
-  //   }
-  // }
-  // console.log('----', endList, '----', endList.length);
+  });
   return end1;
 }
 
@@ -808,15 +795,17 @@ export function getNameToEmojiToHtml(str, gap = false, appendP = false) {
       rs += value;
     }
   }
-  // const value = `${tranlateContentToHtml(rs)}`;
-  // return appendP ? `${rs}</p>` : value;
   return rs;
 }
 
-export function handlePasteContent(editor, args) {
+export function handlePasteContent(editor, args ,isInput) {
   let content = getEmojiName(args.content);
   content = content?.replace(/<[^>]*>/g, ''); // 把富文本转为plain text
-  content = getNameToEmoji(content);
+  if(isInput){
+    // input的时候删除所有换行
+    content = content.replace(/\n/g,'');
+  }
+  content = getNameToEmoji(content).replace(/<div>/, '').replace(/<\/div>/, '');
   return content;
 }
 
