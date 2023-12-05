@@ -2,7 +2,7 @@
 group:
   title: hooks
   order: 2
-title: useEventCenter
+title: useEventCenter 事件中心
 ---
 
 <h2>useEventCenter</h2>

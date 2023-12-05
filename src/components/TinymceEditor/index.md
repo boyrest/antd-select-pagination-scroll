@@ -2,7 +2,7 @@
 group:
   title: 数据录入
   order: 1
-title: TinymceEditor
+title: TinymceEditor 富文本
 ---
 
 <h2>TinymceEditor</h2>

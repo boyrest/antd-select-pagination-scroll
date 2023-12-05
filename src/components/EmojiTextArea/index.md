@@ -2,7 +2,7 @@
 group:
   title: 数据录入
   order: 2
-title: EmojiTextArea
+title: EmojiTextArea emoji输入
 ---
 
 <h2>EmojiTextArea</h2>
@@ -28,7 +28,7 @@ export default () => {
         onChange={(val) => {
           setValue(val);
         }}
-        init={{placeholder: '111'}}
+        init={{ placeholder: '请输入' }}
         maxLength={10}
       />
     </div>
@@ -42,7 +42,7 @@ export default () => {
 ```tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { EmojiTextArea } from '@dm/xman-packages';
-import { Button,Form } from 'antd';
+import { Button, Form } from 'antd';
 
 export default () => {
   const [value, setValue] = useState('');
@@ -51,7 +51,7 @@ export default () => {
 
   return (
     <div>
-      <Form form={form} name="control-hooks" onFinish={()=>{}} >
+      <Form form={form} name="control-hooks" onFinish={() => {}}>
         <Form.Item
           name="note"
           label="Note"
@@ -59,11 +59,11 @@ export default () => {
             ({ getFieldValue }) => ({
               validator(_, value) {
                 const length = editorRef.current.getLength();
-                if(length > 15){
-                  return Promise.reject(new Error('字符长度需要少于10位'));    
+                if (length > 15) {
+                  return Promise.reject(new Error('字符长度需要少于10位'));
                 }
                 const emojiNum = editorRef.current.getEmojiNum();
-                if(emojiNum> 5){
+                if (emojiNum > 5) {
                   return Promise.reject(new Error('表情数量需要少于等于5个'));
                 }
                 return Promise.resolve();
@@ -71,7 +71,7 @@ export default () => {
             }),
           ]}
         >
-          <EmojiTextArea maxLength={15} ref={editorRef} preventInputByMaxLength={false}/>
+          <EmojiTextArea maxLength={15} ref={editorRef} preventInputByMaxLength={false} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
@@ -103,7 +103,7 @@ export default () => {
         }}
         maxLength={20}
         input
-        init={{placeholder: '111'}}
+        init={{ placeholder: '请输入' }}
         preventInputByMaxLength={false}
       />
     </div>

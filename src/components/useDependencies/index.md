@@ -2,7 +2,7 @@
 group:
   title: hooks
   order: 1
-title: useDependencies
+title: useDependencies 监听依赖
 ---
 
 <h2>useDependencies</h2>
