@@ -68,6 +68,8 @@
     "antd": "^4.22.6",
     "query-string": "^8.1.0",
     "react-lines-ellipsis": "^0.15.4",
-    "tinymce": "^6.1.2"
+    "tinymce": "^6.1.2",
+    "redux": "^4.2.1",
+    "redux-saga": "^1.2.3"
   }
 }

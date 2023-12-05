@@ -6,3 +6,5 @@ export { default as useEventCenter } from './components/useEventCenter';
 export { default as utils } from './components/Utils';
 export { default as TextEllipsis } from './components/TextEllipsis';
 export { default as SelectPagination } from './components/SelectPagination';
+// @ts-ignore
+export { default as createReduxSagas } from './components/createReduxSagas';
