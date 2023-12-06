@@ -70,7 +70,7 @@ const SelectPagination: React.FC<SelectPaginationIProps & SelectProps> = (props)
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(0);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGESIZE);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<string>('');
   const timeRef = useRef<number | null>(null);
   const fetchRef = useRef<number | null>(null);
   const focusRef = useRef<boolean>(false);
@@ -145,7 +145,7 @@ const SelectPagination: React.FC<SelectPaginationIProps & SelectProps> = (props)
     }
   };
 
-  const searchHandle = useCallback((newSearchvalue) => {
+  const searchHandle = useCallback((newSearchvalue: string) => {
     focusRef.current = false;
     if (timeRef.current) {
       clearTimeout(timeRef.current);
@@ -157,7 +157,7 @@ const SelectPagination: React.FC<SelectPaginationIProps & SelectProps> = (props)
     }, searchDebounceTime);
   }, []);
 
-  const parseValue = useCallback((data) => {
+  const parseValue = useCallback((data: any) => {
     if (valueType === ValueType.ObjectValue) {
       return data?.value;
     } else {

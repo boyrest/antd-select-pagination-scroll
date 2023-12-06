@@ -109,7 +109,7 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
             value={value || ''}
             onEditorChange={handleUpdate}
             onBeforeAddUndo={handleBeforeAddUndo}
-            onKeyDown={(e: EditorEvent<'onKeyDown'>, editor: TinyMCEEditor) => {
+            onKeyDown={(e: any, editor: TinyMCEEditor) => {
               if (e.code === 'Enter' && input) {
                 e.preventDefault();
               }
