@@ -11,7 +11,7 @@ title: createReduxSagas dva伪装器
 <div>伪装成dva实现部分功能，可以方便读取model</div>
 
 <h3>背景</h3>
-<div>用于使用dva的umi项目将页面或者页面组件作为模块打包导出</div>
+<div>项目中大量使用dva，而umi项目中dva是和umi结合在一起的，组件或页面导出的时候需要剔除umi，导致无法加载models，dva也就无法使用，导致项目中使用dva的所有逻辑都存在问题。如果无法解决dva的问题，输出组件或者页面给外部项目使用时，需要改造大量代码，成本极高、风险极大。</div>
 
 <h3>代码演示</h3>
 
@@ -330,3 +330,5 @@ module.exports = {
   ],
 };
 ```
+
+<a href="https://www.yuque.com/yuqueyonghuza4x0r/qd1rig/lxt1h3exmsgk31rn?singleDoc#" target="_blank">umi 项目代码拆分为组件输出方案</a>
