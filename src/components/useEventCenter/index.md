@@ -35,7 +35,7 @@ function ComponentA({ componentId }) {
           }
         }}
       >
-        {isReady ? '发送数据' : '我没准备好'}
+        {isReady ? '发送数据' : '我准备好了'}
       </Button>
     </div>
   );
@@ -59,7 +59,7 @@ function ComponentB({ componentId }) {
           }
         }}
       >
-        {isReady ? '发送数据' : '我没准备好'}
+        {isReady ? '发送数据' : '我准备好了'}
       </Button>
     </div>
   );
@@ -71,6 +71,7 @@ function ComponentC({ dependenceComponentIds }) {
   });
   return (
     <div style={{ marginTop: 20, fontSize: 20 }}>
+      <div>组件C：</div>
       {isReady ? `数据：${JSON.stringify(searches)}` : '组件A和组件B还有人没有准备好'}
     </div>
   );

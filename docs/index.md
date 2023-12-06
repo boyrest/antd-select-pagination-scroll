@@ -1,7 +1,7 @@
 ---
 hero:
   title: xman-packages
-  desc: antd4 select 分页加载
+  desc: 通用组件
   actions:
     - text: Getting Started
       link: /components
