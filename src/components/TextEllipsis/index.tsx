@@ -8,10 +8,11 @@ import { PREFIX_CLASSNAME } from '../../utils/consts';
 export interface TextEllipsisIProps {
   text: string;
   maxLine?: number;
+  flex?: boolean;
 }
 
 const PREFIX_CLASSNAME_COMPONENT = PREFIX_CLASSNAME + '-text-ellipsis';
-const TextEllipsis: React.FC<TextEllipsisIProps> = ({ text = '', maxLine = 1 }) => {
+const TextEllipsis: React.FC<TextEllipsisIProps> = ({ text = '', maxLine = 1, flex = false }) => {
   const ref = useRef(null);
   const timeRef = useRef<number | null>(null);
   const [visible, setVisible] = useState(false);
@@ -19,6 +20,10 @@ const TextEllipsis: React.FC<TextEllipsisIProps> = ({ text = '', maxLine = 1 }) 
   const clampedRef = useRef(false);
   const [load, setLoad] = useState(false);
   useEffect(() => {
+    if (!flex) {
+      setLoad(true);
+      return;
+    }
     if (size?.width !== undefined) {
       if (timeRef.current) {
         clearTimeout(timeRef.current);
@@ -32,7 +37,6 @@ const TextEllipsis: React.FC<TextEllipsisIProps> = ({ text = '', maxLine = 1 }) 
         });
       }, 50);
     }
-    console.log(size);
   }, [size?.width]);
 
   return (
