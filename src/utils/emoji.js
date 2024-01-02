@@ -554,18 +554,7 @@ export function getEmojiCodeList() {
 
 const endTxt = {};
 const endList = [];
-const extList = [
-  '3c',
-  '70',
-  '3e',
-  '2f',
-  'd83d',
-  'd83e',
-  'd83c',
-  'd83b',
-  'd83f',
-  'd83g',
-];
+const extList = ['3c', '70', '3e', '2f', 'd83d', 'd83e', 'd83c', 'd83b', 'd83f', 'd83g'];
 
 export function getEmojiName(str) {
   const end = str.replace(/\<span.*?>(.*?)<\/span>/g, (mathed, index, str) => {
@@ -590,16 +579,17 @@ export function getEmojiName(str) {
 }
 export function transformTextToRichText(str) {
   if (!str) return '';
-  str = str.split('\n').map((item) => {
-    return `<div>${item || ''}</div>`;
-  }).join('');
+  str = str
+    .split('\n')
+    .map((item) => {
+      return `<div>${item || ''}</div>`;
+    })
+    .join('');
   let rs = '';
   for (const value of str) {
     const index = getEmojiwindowList().indexOf(value);
     if (index > -1) {
-      rs += `<img src='${
-        getEmojiList()[index]
-      }' class='braft-emoticon-wrap' />`;
+      rs += `<img src='${getEmojiList()[index]}' class='braft-emoticon-wrap' />`;
     } else {
       rs += value;
     }
@@ -607,14 +597,532 @@ export function transformTextToRichText(str) {
   return rs;
 }
 
-export function handlePasteContent(editor, args ,isInput) {
+const characterEntity = [
+  {
+    name: '&quot;',
+    character: '"',
+  },
+  {
+    name: '&amp;',
+    character: '&',
+  },
+  {
+    name: '&lt;',
+    character: '<',
+  },
+  {
+    name: '&gt;',
+    character: '>',
+  },
+  {
+    name: '&euro;',
+    character: '€',
+  },
+  {
+    name: '&sbquo;',
+    character: '‚',
+  },
+  {
+    name: '&fnof;',
+    character: 'ƒ',
+  },
+  {
+    name: '&bdquo;',
+    character: '„',
+  },
+  {
+    name: '&hellip;',
+    character: '…',
+  },
+  {
+    name: '&dagger;',
+    character: '†',
+  },
+  {
+    name: '&Dagger;',
+    character: '‡',
+  },
+  {
+    name: '&circ;',
+    character: 'ˆ',
+  },
+  {
+    name: '&permil;',
+    character: '‰',
+  },
+  {
+    name: '&Scaron;',
+    character: 'Š',
+  },
+  {
+    name: '&lsaquo;',
+    character: '‹',
+  },
+  {
+    name: '&OElig;',
+    character: 'Œ',
+  },
+  {
+    name: '&Zcaron;',
+    character: 'Ž',
+  },
+  {
+    name: '&lsquo;',
+    character: '‘',
+  },
+  {
+    name: '&rsquo;',
+    character: '’',
+  },
+  {
+    name: '&ldquo;',
+    character: '“',
+  },
+  {
+    name: '&rdquo;',
+    character: '”',
+  },
+  {
+    name: '&bull;',
+    character: '•',
+  },
+  {
+    name: '&ndash;',
+    character: '–',
+  },
+  {
+    name: '&mdash;',
+    character: '—',
+  },
+  {
+    name: '&tilde;',
+    character: '˜',
+  },
+  {
+    name: '&trade;',
+    character: '™',
+  },
+  {
+    name: '&scaron;',
+    character: 'š',
+  },
+  {
+    name: '&rsaquo;',
+    character: '›',
+  },
+  {
+    name: '&oelig;',
+    character: 'œ',
+  },
+  {
+    name: '&zcaron;',
+    character: 'ž',
+  },
+  {
+    name: '&Yuml;',
+    character: 'Ÿ',
+  },
+  {
+    name: '&nbsp;',
+    character: ' ',
+  },
+  {
+    name: '&iexcl;',
+    character: '¡',
+  },
+  {
+    name: '&cent;',
+    character: '¢',
+  },
+  {
+    name: '&pound;',
+    character: '£',
+  },
+  {
+    name: '&curren;',
+    character: '¤',
+  },
+  {
+    name: '&yen;',
+    character: '¥',
+  },
+  {
+    name: '&brvbar;',
+    character: '¦',
+  },
+  {
+    name: '&sect;',
+    character: '§',
+  },
+  {
+    name: '&uml;',
+    character: '¨',
+  },
+  {
+    name: '&copy;',
+    character: '©',
+  },
+  {
+    name: '&ordf;',
+    character: 'ª',
+  },
+  {
+    name: '&laquo;',
+    character: '«',
+  },
+  {
+    name: '&not;',
+    character: '¬',
+  },
+  {
+    name: '&shy;',
+    character: '­',
+  },
+  {
+    name: '&reg;',
+    character: '®',
+  },
+  {
+    name: '&macr;',
+    character: '¯',
+  },
+  {
+    name: '&deg;',
+    character: '°',
+  },
+  {
+    name: '&plusmn;',
+    character: '±',
+  },
+  {
+    name: '&sup2;',
+    character: '²',
+  },
+  {
+    name: '&sup3;',
+    character: '³',
+  },
+  {
+    name: '&acute;',
+    character: '´',
+  },
+  {
+    name: '&micro;',
+    character: 'µ',
+  },
+  {
+    name: '&para;',
+    character: '¶',
+  },
+  {
+    name: '&middot;',
+    character: '·',
+  },
+  {
+    name: '&cedil;',
+    character: '¸',
+  },
+  {
+    name: '&sup1;',
+    character: '¹',
+  },
+  {
+    name: '&ordm;',
+    character: 'º',
+  },
+  {
+    name: '&raquo;',
+    character: '»',
+  },
+  {
+    name: '&frac14;',
+    character: '¼',
+  },
+  {
+    name: '&frac12;',
+    character: '½',
+  },
+  {
+    name: '&frac34;',
+    character: '¾',
+  },
+  {
+    name: '&iquest;',
+    character: '¿',
+  },
+  {
+    name: '&Agrave;',
+    character: 'À',
+  },
+  {
+    name: '&Aacute;',
+    character: 'Á',
+  },
+  {
+    name: '&Acirc;',
+    character: 'Â',
+  },
+  {
+    name: '&Atilde;',
+    character: 'Ã',
+  },
+  {
+    name: '&Auml;',
+    character: 'Ä',
+  },
+  {
+    name: '&Aring;',
+    character: 'Å',
+  },
+  {
+    name: '&AElig;',
+    character: 'Æ',
+  },
+  {
+    name: '&Ccedil;',
+    character: 'Ç',
+  },
+  {
+    name: '&Egrave;',
+    character: 'È',
+  },
+  {
+    name: '&Eacute;',
+    character: 'É',
+  },
+  {
+    name: '&Ecirc;',
+    character: 'Ê',
+  },
+  {
+    name: '&Euml;',
+    character: 'Ë',
+  },
+  {
+    name: '&Igrave;',
+    character: 'Ì',
+  },
+  {
+    name: '&Iacute;',
+    character: 'Í',
+  },
+  {
+    name: '&Icirc;',
+    character: 'Î',
+  },
+  {
+    name: '&Iuml;',
+    character: 'Ï',
+  },
+  {
+    name: '&ETH;',
+    character: 'Ð',
+  },
+  {
+    name: '&Ntilde;',
+    character: 'Ñ',
+  },
+  {
+    name: '&Ograve;',
+    character: 'Ò',
+  },
+  {
+    name: '&Oacute;',
+    character: 'Ó',
+  },
+  {
+    name: '&Ocirc;',
+    character: 'Ô',
+  },
+  {
+    name: '&Otilde;',
+    character: 'Õ',
+  },
+  {
+    name: '&Ouml;',
+    character: 'Ö',
+  },
+  {
+    name: '&times;',
+    character: '×',
+  },
+  {
+    name: '&Oslash;',
+    character: 'Ø',
+  },
+  {
+    name: '&Ugrave;',
+    character: 'Ù',
+  },
+  {
+    name: '&Uacute;',
+    character: 'Ú',
+  },
+  {
+    name: '&Ucirc;',
+    character: 'Û',
+  },
+  {
+    name: '&Uuml;',
+    character: 'Ü',
+  },
+  {
+    name: '&Yacute;',
+    character: 'Ý',
+  },
+  {
+    name: '&THORN;',
+    character: 'Þ',
+  },
+  {
+    name: '&szlig;',
+    character: 'ß',
+  },
+  {
+    name: '&agrave;',
+    character: 'à',
+  },
+  {
+    name: '&aacute;',
+    character: 'á',
+  },
+  {
+    name: '&acirc;',
+    character: 'â',
+  },
+  {
+    name: '&atilde;',
+    character: 'ã',
+  },
+  {
+    name: '&auml;',
+    character: 'ä',
+  },
+  {
+    name: '&aring;',
+    character: 'å',
+  },
+  {
+    name: '&aelig;',
+    character: 'æ',
+  },
+  {
+    name: '&ccedil;',
+    character: 'ç',
+  },
+  {
+    name: '&egrave;',
+    character: 'è',
+  },
+  {
+    name: '&eacute;',
+    character: 'é',
+  },
+  {
+    name: '&ecirc;',
+    character: 'ê',
+  },
+  {
+    name: '&euml;',
+    character: 'ë',
+  },
+  {
+    name: '&igrave;',
+    character: 'ì',
+  },
+  {
+    name: '&iacute;',
+    character: 'í',
+  },
+  {
+    name: '&icirc;',
+    character: 'î',
+  },
+  {
+    name: '&iuml;',
+    character: 'ï',
+  },
+  {
+    name: '&eth;',
+    character: 'ð',
+  },
+  {
+    name: '&ntilde;',
+    character: 'ñ',
+  },
+  {
+    name: '&ograve;',
+    character: 'ò',
+  },
+  {
+    name: '&oacute;',
+    character: 'ó',
+  },
+  {
+    name: '&ocirc;',
+    character: 'ô',
+  },
+  {
+    name: '&otilde;',
+    character: 'õ',
+  },
+  {
+    name: '&ouml;',
+    character: 'ö',
+  },
+  {
+    name: '&divide;',
+    character: '÷',
+  },
+  {
+    name: '&oslash;',
+    character: 'ø',
+  },
+  {
+    name: '&ugrave;',
+    character: 'ù',
+  },
+  {
+    name: '&uacute;',
+    character: 'ú',
+  },
+  {
+    name: '&ucirc;',
+    character: 'û',
+  },
+  {
+    name: '&uuml;',
+    character: 'ü',
+  },
+  {
+    name: '&yacute;',
+    character: 'ý',
+  },
+  {
+    name: '&thorn;',
+    character: 'þ',
+  },
+  {
+    name: '&yuml;',
+    character: 'ÿ',
+  },
+];
+export function handlePasteContent(editor, args, isInput) {
   let content = getEmojiName(args.content);
   content = content?.replace(/<[^>]*>/g, ''); // 把富文本转为plain text
-  if(isInput){
+  if (isInput) {
     // input的时候删除所有换行
-    content = content.replace(/\n/g,'');
+    content = content.replace(/\n/g, '');
   }
-  content = transformTextToRichText(content).replace(/<div>/, '').replace(/<\/div>/, '');
+  if (content) {
+    characterEntity.forEach(({ name, character }) => {
+      const regex = new RegExp(name, 'g');
+      content = content.replace(regex, character);
+    });
+  }
+  content = transformTextToRichText(content)
+    .replace(/<div>/, '')
+    .replace(/<\/div>/, '');
   return content;
 }
 
@@ -651,21 +1159,19 @@ export function countSymbols(richHtml) {
   return getStrCount(emojireg, '$~');
 }
 
-export const  transformEmojiCodeToImg = (text)=>{
+export const transformEmojiCodeToImg = (text) => {
   let rs = '';
   for (const value of text) {
     const index = getEmojiwindowList().indexOf(value);
     if (index > -1) {
-      rs += `<img src='${
-        getEmojiList()[index]
-      }' class='braft-emoticon-wrap' />`;
+      rs += `<img src='${getEmojiList()[index]}' class='braft-emoticon-wrap' />`;
     } else {
       rs += value;
     }
   }
   return rs;
-}
+};
 
-export const transformRichTextToText = (richText)=>{
-  return filterHtml(getEmojiName(richText || ''))
-}
+export const transformRichTextToText = (richText) => {
+  return filterHtml(getEmojiName(richText || ''));
+};
