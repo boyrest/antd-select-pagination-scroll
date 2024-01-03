@@ -5,8 +5,12 @@ import { IAllProps } from '../TinymceEditor/components/Editor';
 // @ts-ignore
 import { Editor as TinyMCEEditor, EditorEvent } from 'tinymce';
 import EmojiPopover from '../EmojiPopover';
-// @ts-ignore
-import { getEmojiName, handlePasteContent, countSymbols } from '../../utils/emoji';
+import {
+  handlePasteContent,
+  removeCharacterEntity,
+  countSymbols,
+  // @ts-ignore
+} from '../../utils/emoji';
 // @ts-ignore
 import filterHtml from '../../utils/filterHtml';
 import './index.less';
@@ -63,10 +67,10 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
       const emojiNum = getEmojiNum(editor);
       const length = textLen + emojiNum * 2;
       if (length <= maxLength || !preventInputByMaxLength) {
-        onChange(value);
+        onChange(removeCharacterEntity(value));
       }
     } else {
-      onChange(value);
+      onChange(removeCharacterEntity(value));
     }
   };
 

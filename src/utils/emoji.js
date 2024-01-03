@@ -1114,15 +1114,20 @@ export function handlePasteContent(editor, args, isInput) {
     // input的时候删除所有换行
     content = content.replace(/\n/g, '');
   }
+
+  content = transformTextToRichText(content)
+    .replace(/<div>/, '')
+    .replace(/<\/div>/, '');
+  return content;
+}
+
+export function removeCharacterEntity(content) {
   if (content) {
     characterEntity.forEach(({ name, character }) => {
       const regex = new RegExp(name, 'g');
       content = content.replace(regex, character);
     });
   }
-  content = transformTextToRichText(content)
-    .replace(/<div>/, '')
-    .replace(/<\/div>/, '');
   return content;
 }
 
