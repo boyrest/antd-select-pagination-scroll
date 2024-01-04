@@ -94,6 +94,7 @@ import { Button } from 'antd';
 
 export default () => {
   const [value, setValue] = useState('');
+  console.log(value, '===http://localhost:10003====');
   return (
     <div>
       <EmojiTextArea

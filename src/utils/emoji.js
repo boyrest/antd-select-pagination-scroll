@@ -1124,8 +1124,10 @@ export function handlePasteContent(editor, args, isInput) {
 export function removeCharacterEntity(content) {
   if (content) {
     characterEntity.forEach(({ name, character }) => {
-      const regex = new RegExp(name, 'g');
-      content = content.replace(regex, character);
+      if (content && content.indexOf(name) > -1) {
+        const regex = new RegExp(name, 'g');
+        content = content.replace(regex, character);
+      }
     });
   }
   return content;
