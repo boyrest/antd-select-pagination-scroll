@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@dm/xman-packages",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "xman-packages",
   "author": "baron zhu",
   "license": "MIT",

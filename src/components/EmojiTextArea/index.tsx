@@ -67,10 +67,10 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
       const emojiNum = getEmojiNum(editor);
       const length = textLen + emojiNum * 2;
       if (length <= maxLength || !preventInputByMaxLength) {
-        onChange(value === '&nbsp;' ? value : removeCharacterEntity(value));
+        onChange(value);
       }
     } else {
-      onChange(value === '&nbsp;' ? value : removeCharacterEntity(value));
+      onChange(value);
     }
   };
 
@@ -126,6 +126,7 @@ const EmojiTextArea: React.FC<IEditorProps> = forwardRef((props, ref) => {
               toolbar: false,
               plugins: '',
               menubar: false,
+              entity_encoding: 'raw',
               forced_root_block: 'div',
               paste_preprocess: (editor: any, data: any) => {
                 data.content = handlePasteContent(editor, data, input);
